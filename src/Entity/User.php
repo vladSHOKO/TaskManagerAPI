@@ -12,6 +12,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -57,8 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Groups(['user:write'])]
+    #[Groups(['user:read', 'user:write'])]
     private string $password;
 
     /**
@@ -68,7 +68,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read', 'user:write'])]
     private Collection $taskCollection;
 
+    #[Groups(['user:write'])]
+    #[Assert\NotBlank]
     private string $plainPassword;
+
 
     public function __construct()
     {
