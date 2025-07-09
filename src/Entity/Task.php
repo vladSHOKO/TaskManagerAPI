@@ -55,6 +55,12 @@ class Task
     #[Groups(['task:read', 'task:write'])]
     private bool $status = false;
 
+    #[ORM\ManyToOne(inversedBy: 'taskCollection')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
+    #[Groups(['task:read', 'task:write'])]
+    private ?User $owner = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -114,6 +120,18 @@ class Task
     public function setStatus(bool $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): static
+    {
+        $this->owner = $owner;
 
         return $this;
     }
