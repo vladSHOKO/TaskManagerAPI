@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     new Delete()
 ],
     normalizationContext: ['groups' => ['task:read']],
-    denormalizationContext: ['groups' => ['task:write']],)]
+    denormalizationContext: ['groups' => ['task:write']])]
 class Task
 {
     #[ORM\Id]
