@@ -58,7 +58,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    #[Groups(['user:read', 'user:write'])]
     private string $password;
 
     /**
@@ -68,8 +67,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read', 'user:write'])]
     private Collection $taskCollection;
 
-    #[Groups(['user:write'])]
+
     #[Assert\NotBlank]
+    #[Groups(['user:write'])]
     private string $plainPassword;
 
 

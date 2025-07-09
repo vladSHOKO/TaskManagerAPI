@@ -16,10 +16,10 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-#        json_login:
-#            check_path: app_login
-#            username_path: email
-#            password_path: password
+            json_login:
+                check_path: api_login
+            logout:
+                path: /logout
 
 
             # activate different ways to authenticate
