@@ -26,6 +26,10 @@ class Token
     #[Assert\NotBlank]
     private User $owner;
 
+    #[ORM\Column]
+    #[Assert\NotBlank]
+    private \DateTimeImmutable $expiredAt;
+
     /**
      * @throws RandomException
      */
@@ -59,6 +63,18 @@ class Token
     public function setOwner(User $owner): static
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getExpiredAt(): ?\DateTimeImmutable
+    {
+        return $this->expiredAt;
+    }
+
+    public function setExpiredAt(\DateTimeImmutable $expiredAt): static
+    {
+        $this->expiredAt = $expiredAt;
 
         return $this;
     }
