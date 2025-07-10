@@ -29,7 +29,8 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Patch()
     ],
     normalizationContext: ['groups' => ['user:read']],
-    denormalizationContext: ['groups' => ['user:write']])]
+    denormalizationContext: ['groups' => ['user:write']],
+    security: "is_granted('ROLE_ADMIN') or object == user")]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
