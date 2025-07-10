@@ -36,6 +36,7 @@ class Token
     public function __construct()
     {
         $this->tokenString = random_bytes(32);
+        $this->expiredAt = (new \DateTimeImmutable())->add(new \DateInterval('PT1H'));
     }
 
     public function getId(): int
