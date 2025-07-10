@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\TokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Random\RandomException;
@@ -35,8 +34,9 @@ class Token
     /**
      * @throws RandomException
      */
-    public function __construct()
+    public function __construct(User $user)
     {
+        $this->owner = $user;
         $this->tokenString = bin2hex(random_bytes(64));
         $this->expiredAt = (new \DateTimeImmutable())->add(new \DateInterval('PT1H'));
     }
@@ -80,5 +80,10 @@ class Token
         $this->expiredAt = $expiredAt;
 
         return $this;
+    }
+
+    public function isValid(): bool
+    {
+        return $this->expiredAt > new \DateTimeImmutable();
     }
 }

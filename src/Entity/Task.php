@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -16,13 +18,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 #[ApiResource(operations: [
     new GetCollection(),
-    new Get(),
-    new Post(),
-    new Patch(),
-    new Delete()
+    new Get(security: "object.getOwner() == user"),
+    new Post(security: "object.getOwner() == user"),
+    new Patch(security: "object.getOwner() == user"),
+    new Delete(security: "object.getOwner() == user")
 ],
     normalizationContext: ['groups' => ['task:read']],
-    denormalizationContext: ['groups' => ['task:write']])]
+    denormalizationContext: ['groups' => ['task:write']],
+    security: "is_granted('ROLE_USER')",
+
+)]
 class Task
 {
     #[ORM\Id]
@@ -59,7 +64,7 @@ class Task
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
     #[Groups(['task:read', 'task:write'])]
-    private ?User $owner = null;
+    private User $owner;
 
     public function __construct()
     {
@@ -124,12 +129,12 @@ class Task
         return $this;
     }
 
-    public function getOwner(): ?User
+    public function getOwner(): User
     {
         return $this->owner;
     }
 
-    public function setOwner(?User $owner): static
+    public function setOwner(User $owner): static
     {
         $this->owner = $owner;
 
