@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\TokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Random\RandomException;
@@ -19,6 +20,7 @@ class Token
     #[ORM\Column(length: 200)]
     #[Assert\NotBlank]
     #[Assert\Type('string')]
+    #[Assert\Length(max: 200)]
     private string $tokenString;
 
     #[ORM\ManyToOne(inversedBy: 'tokens')]
@@ -35,7 +37,7 @@ class Token
      */
     public function __construct()
     {
-        $this->tokenString = random_bytes(32);
+        $this->tokenString = bin2hex(random_bytes(64));
         $this->expiredAt = (new \DateTimeImmutable())->add(new \DateInterval('PT1H'));
     }
 
