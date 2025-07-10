@@ -13,9 +13,15 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         UserFactory::new()->createOne([
-            'email' => 'test@test.ru',
+            'email' => 'test@admin.ru',
             'plainPassword' => 'pass',
             'roles' => ['ROLE_USER', 'ROLE_ADMIN'],
+        ]);
+
+        UserFactory::new()->createOne([
+            'email' => 'test@user.ru',
+            'plainPassword' => 'pass',
+            'roles' => ['ROLE_USER'],
         ]);
 
         UserFactory::new()->createMany(10);
@@ -24,7 +30,7 @@ class AppFixtures extends Fixture
             TokenFactory::new()->createOne(['owner' => UserFactory::random()]);
         }
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 30; $i++) {
             TaskFactory::new()->createOne(['owner' => UserFactory::random()]);
         }
     }

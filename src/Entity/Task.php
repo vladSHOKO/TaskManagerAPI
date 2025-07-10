@@ -17,10 +17,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 #[ApiResource(operations: [
     new GetCollection(provider: TaskCollectionDataProvider::class),
-    new Get(security: "object.getOwner() == user"),
-    new Post(security: "object.getOwner() == user"),
-    new Patch(security: "object.getOwner() == user"),
-    new Delete(security: "object.getOwner() == user")
+    new Get(security: "is_granted('ROLE_ADMIN') or object.getOwner() == user"),
+    new Post(security: "is_granted('ROLE_ADMIN') or object.getOwner() == user"),
+    new Patch(security: "is_granted('ROLE_ADMIN') or object.getOwner() == user"),
+    new Delete(security: "is_granted('ROLE_ADMIN') or object.getOwner() == user")
 ],
     normalizationContext: ['groups' => ['task:read']],
     denormalizationContext: ['groups' => ['task:write']],
