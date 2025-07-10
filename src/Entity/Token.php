@@ -34,9 +34,8 @@ class Token
     /**
      * @throws RandomException
      */
-    public function __construct(User $user)
+    public function __construct()
     {
-        $this->owner = $user;
         $this->tokenString = bin2hex(random_bytes(64));
         $this->expiredAt = (new \DateTimeImmutable())->add(new \DateInterval('PT1H'));
     }

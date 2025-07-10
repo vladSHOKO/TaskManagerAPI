@@ -33,7 +33,7 @@ final class ApiLoginController extends AbstractController
         $token = $this->tokenRepository->findOneBy(['owner' => $user], ['expiredAt' => 'DESC']);
 
         if (!$token->isValid()) {
-            $token = new Token($user);
+            $token = (new Token())->setOwner($user);
             $this->entityManager->persist($token);
             $this->entityManager->flush();
         }
