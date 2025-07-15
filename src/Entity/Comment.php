@@ -9,15 +9,18 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\DataProvider\CommentCollectionDataProvider;
+use App\Processor\CommentPostProcessor;
 use App\Repository\CommentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use http\Exception\InvalidArgumentException;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
-        new Post(security: 'is_granted("ROLE_ADMIN") or object.getAuthor() == user'),
+        new Post(security: 'is_granted("ROLE_USER")', processor: CommentPostProcessor::class,),
         new Get(security: 'is_granted("ROLE_ADMIN") or object.getAuthor() == user'),
         new Delete(security: 'is_granted("ROLE_ADMIN") or object.getAuthor() == user'),
         new GetCollection(provider: CommentCollectionDataProvider::class),
@@ -33,31 +36,24 @@ class Comment
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Goups(['comment:read'])]
+    #[Groups(['comment:read'])]
     private int $id;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank]
-    #[Goups(['comment:read'])]
+    #[Groups(['comment:read'])]
     private User $author;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
-    #[Goups(['comment:read'])]
+    #[Groups(['comment:read', 'comment:write'])]
     private Task $task;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank]
-    #[Goups(['comment:read', 'comment:write'])]
+    #[Groups(['comment:read', 'comment:write'])]
     private string $text;
-
-    public function __construct(Security $security)
-    {
-        $user = $security->getUser();
-    }
 
     public function getId(): int
     {

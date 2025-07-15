@@ -24,8 +24,8 @@ use Symfony\Component\Validator\Constraints as Assert;
     new Patch(security: "is_granted('ROLE_ADMIN') or object.getOwner() == user"),
     new Delete(security: "is_granted('ROLE_ADMIN') or object.getOwner() == user")
 ],
-    normalizationContext: ['groups' => ['task:write']],
-    denormalizationContext: ['groups' => ['task:read']],
+    normalizationContext: ['groups' => ['task:read']],
+    denormalizationContext: ['groups' => ['task:write']],
     security: "is_granted('ROLE_USER')",
 
 )]
@@ -71,6 +71,7 @@ class Task
      * @var Collection<int, Comment>
      */
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'task', orphanRemoval: true)]
+    #[Groups(['task:read', 'task:write'])]
     private Collection $comments;
 
     public function __construct()
