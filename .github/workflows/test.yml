@@ -46,7 +46,7 @@ jobs:
                     coverage: xdebug
 
             -   name: Install Composer dependencies
-                run: composer install --prefer-dist --no-progress
+                run: composer update --prefer-dist --no-progress
 
             -   name: Wait for PostgreSQL to be ready
                 run: |
