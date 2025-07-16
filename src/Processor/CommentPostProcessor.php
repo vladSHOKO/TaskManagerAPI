@@ -7,7 +7,6 @@ use ApiPlatform\State\ProcessorInterface;
 use App\Entity\Comment;
 use Doctrine\ORM\EntityManagerInterface;
 use Negotiation\Exception\InvalidArgument;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
