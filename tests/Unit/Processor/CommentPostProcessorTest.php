@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Processor;
+namespace App\Tests\Unit\Processor;
 
 use ApiPlatform\Metadata\Operation;
 use App\Entity\Comment;

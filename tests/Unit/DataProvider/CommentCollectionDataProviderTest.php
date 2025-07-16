@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\DataProvider;
+namespace App\Tests\Unit\DataProvider;
 
 use ApiPlatform\Metadata\Operation;
 use App\DataProvider\CommentCollectionDataProvider;

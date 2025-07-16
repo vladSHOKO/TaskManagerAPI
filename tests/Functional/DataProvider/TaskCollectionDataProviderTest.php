@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\DataProvider;
+namespace App\Tests\Functional\DataProvider;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
