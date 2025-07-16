@@ -67,7 +67,7 @@ jobs:
                 run: php bin/console doctrine:migrations:migrate --env=test --no-interaction
 
             -   name: Upload fixtures
-                run: symfony console doctrine:fixtures:load --env=test --no-interaction
+                run: php bin/console doctrine:fixtures:load --env=test --no-interaction
 
                 continue-on-error: true
 
