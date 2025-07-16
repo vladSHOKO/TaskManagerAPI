@@ -59,13 +59,16 @@ jobs:
             -   name: Create .env.test.local
                 run: |
                     echo "DATABASE_URL=postgresql://app:pass@127.0.0.1:5432/app" > .env.test.local
-            -   name: Create Database
-                run: symfony console doctrine:database:create --env=test --no-interaction
+
+            -   name: Create database
+                run: php bin/console doctrine:database:create --env=test --no-interaction
 
             -   name: Run Doctrine migrations (optional)
                 run: php bin/console doctrine:migrations:migrate --env=test --no-interaction
+
             -   name: Upload fixtures
                 run: symfony console doctrine:fixtures:load --env=test --no-interaction
+
                 continue-on-error: true
 
             -   name: Run PHPUnit tests
