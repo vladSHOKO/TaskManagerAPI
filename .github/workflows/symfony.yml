@@ -1,44 +1,60 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: Symfony
+name: Run test
 
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    push:
+        branches: [ main ]
+    pull_request:
+        branches: [ main ]
 
 jobs:
-  symfony-tests:
-    runs-on: ubuntu-latest
-    steps:
-    #  To automatically get bug fixes and new Php versions for shivammathur/setup-php,
-    # change this to (see https://github.com/shivammathur/setup-php#bookmark-versioning):
-    # uses: shivammathur/setup-php@v2
-    - uses: shivammathur/setup-php@2cb9b829437ee246e9b3cac53555a39208ca6d28
-      with:
-        php-version: '8.0'
-    - uses: actions/checkout@v4
-    - name: Copy .env.test.local
-      run: php -r "file_exists('.env.test.local') || copy('.env.test', '.env.test.local');"
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v3
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
-    - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-    - name: Create Database
-      run: |
-        mkdir -p data
-        touch data/database.sqlite
-    - name: Execute tests (Unit and Feature tests) via PHPUnit
-      env:
-        DATABASE_URL: sqlite:///%kernel.project_dir%/data/database.sqlite
-      run: vendor/bin/phpunit
+    test:
+
+        runs-on: ubuntu-latest
+
+        services:
+            postgres:
+                image: postgres:16-alpine
+                env:
+                    POSTGRES_DB: app
+                    POSTGRES_USER: app
+                    POSTGRES_PASSWORD: pass
+                ports:
+                    - 5432:5432
+                options: >-
+                    --health-cmd="pg_isready -d app -U app"
+                    --health-interval=10s
+                    --health-timeout=5s
+                    --health-retries=5
+
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v4
+
+            -   name: Set up PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: '8.2'
+                    extensions: mbstring, pdo_pgsql, intl
+                    coverage: xdebug
+
+            -   name: Install Composer dependencies
+                run: composer install --prefer-dist --no-progress
+
+            -   name: Wait for PostgreSQL to be ready
+                run: |
+                    for i in {1..10}; do
+                      pg_isready -h 127.0.0.1 -p 5432 -U app && break
+                      echo "Waiting for PostgreSQL..."
+                      sleep 5
+                    done
+
+            -   name: Create .env.test.local
+                run: |
+                    echo "DATABASE_URL=postgresql://app:pass@127.0.0.1:5432/app" > .env.test.local
+
+            -   name: Run Doctrine migrations (optional)
+                run: php bin/console doctrine:migrations:migrate --env=test --no-interaction
+                continue-on-error: true
+
+            -   name: Run PHPUnit tests
+                run: ./vendor/bin/phpunit --colors=always
