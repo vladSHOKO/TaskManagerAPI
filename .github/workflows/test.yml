@@ -89,8 +89,8 @@ jobs:
             -   name: Install Composer dependencies
                 run: composer update --prefer-dist --no-progress
 
-            -   name: Run php-cs-fixer
-                run: ./vendor/bin/php-cs-fixer
-
             -   name: Run php code sniffer
                 run: ./vendor/bin/phpcs
+
+            -   name: Run php lint
+                run: ./vendor/bin/ --exclude=vendor
