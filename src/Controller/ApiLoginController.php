@@ -16,7 +16,9 @@ final class ApiLoginController extends AbstractController
 {
     public function __construct(
         private TokenRepository $tokenRepository,
-        private EntityManagerInterface $entityManager) {}
+        private EntityManagerInterface $entityManager
+    ) {
+    }
 
     /**
      * @throws RandomException
@@ -26,7 +28,7 @@ final class ApiLoginController extends AbstractController
     {
         if (null === $user) {
             return $this->json([
-                'message' => 'Invalid credentials.'
+                'message' => 'Invalid credentials.',
             ], Response::HTTP_UNAUTHORIZED);
         }
 

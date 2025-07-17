@@ -20,7 +20,9 @@ class ApiLoginControllerTest extends WebTestCase
     public function testLoginSuccess(): void
     {
         $client = static::createClient();
-        $client->request('POST', '/api/login',
+        $client->request(
+            'POST',
+            '/api/login',
             server: ['CONTENT_TYPE' => 'application/json'],
             content: json_encode(['username' => 'test@user.ru', 'password' => 'pass']),
         );

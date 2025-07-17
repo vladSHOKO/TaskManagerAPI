@@ -26,11 +26,11 @@ class AppFixtures extends Fixture
 
         UserFactory::new()->createMany(10);
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 20; ++$i) {
             TokenFactory::new()->createOne(['owner' => UserFactory::random()]);
         }
 
-        for ($i = 0; $i < 30; $i++) {
+        for ($i = 0; $i < 30; ++$i) {
             TaskFactory::new()->createOne(['owner' => UserFactory::random()]);
         }
     }

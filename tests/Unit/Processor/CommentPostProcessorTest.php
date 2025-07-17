@@ -77,5 +77,4 @@ class CommentPostProcessorTest extends WebTestCase
 
         $this->assertSame($comment, $result);
     }
-
 }

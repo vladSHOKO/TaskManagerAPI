@@ -26,11 +26,12 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(),
         new Post(),
         new Delete(),
-        new Patch()
+        new Patch(),
     ],
     normalizationContext: ['groups' => ['user:read']],
     denormalizationContext: ['groups' => ['user:write']],
-    security: "is_granted('ROLE_ADMIN') or object == user")]
+    security: "is_granted('ROLE_ADMIN') or object == user"
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -67,7 +68,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read', 'user:write'])]
     private Collection $taskCollection;
 
-
     #[Assert\NotBlank]
     #[Groups(['user:write'])]
     private string $plainPassword;
@@ -83,7 +83,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'author', orphanRemoval: true)]
     private Collection $comments;
-
 
     public function __construct()
     {
@@ -116,7 +115,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string)$this->email;
+        return (string) $this->email;
     }
 
     /**
@@ -161,7 +160,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function __serialize(): array
     {
-        $data = (array)$this;
+        $data = (array) $this;
         $data["\0" . self::class . "\0password"] = hash('crc32c', $this->password);
 
         return $data;
