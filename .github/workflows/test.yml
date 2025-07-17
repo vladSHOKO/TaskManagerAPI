@@ -93,4 +93,4 @@ jobs:
                 run: ./vendor/bin/phpcs
 
             -   name: Run php lint
-                run: ./vendor/bin/ --exclude=vendor
+                run: ./vendor/bin/phplint --exclude=vendor
