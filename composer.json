@@ -80,6 +80,9 @@
         ],
         "php-cs-fix": [
             "./vendor/bin/phpcbf"
+        ],
+        "php-lint": [
+            "./vendor/bin/phplint --exclude=vendor"
         ]
     },
     "conflict": {
