@@ -74,6 +74,12 @@
         ],
         "cs-fix":  [
             "./vendor/bin/php-cs-fixer fix"
+        ],
+        "php-cs": [
+            "./vendor/bin/phpcs"
+        ],
+        "php-cs-fix": [
+            "./vendor/bin/phpcbf"
         ]
     },
     "conflict": {
