@@ -73,3 +73,24 @@ jobs:
 
             -   name: Run PHPUnit tests
                 run: ./vendor/bin/phpunit --colors=always
+    linters:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v4
+
+            -   name: Set up PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: '8.3'
+                    extensions: mbstring, pdo_pgsql, intl
+                    coverage: xdebug
+
+            -   name: Install Composer dependencies
+                run: composer update --prefer-dist --no-progress
+
+            -   name: Run php-cs-fixer
+                run: ./vendor/bin/php-cs-fixer
+
+            -   name: Run php code sniffer
+                run: ./vendor/bin/phpcs
