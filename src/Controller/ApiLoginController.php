@@ -16,8 +16,8 @@ final class ApiLoginController extends AbstractController
 {
     public function __construct(
         private TokenRepository $tokenRepository,
-        private EntityManagerInterface $entityManager)
-    {
+        private EntityManagerInterface $entityManager
+    ) {
     }
 
     /**

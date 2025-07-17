@@ -9,7 +9,9 @@ class TaskCollectionDataProviderTest extends WebTestCase
     public function testProvideAsAdmin()
     {
         $client = static::createClient();
-        $client->request('POST', '/api/login',
+        $client->request(
+            'POST',
+            '/api/login',
             server: ['CONTENT_TYPE' => 'application/json'],
             content: json_encode(['username' => 'test@admin.ru', 'password' => 'pass']),
         );
@@ -20,7 +22,7 @@ class TaskCollectionDataProviderTest extends WebTestCase
 
         $token = json_decode($content, true)['token'];
 
-        $client->setServerParameters(['HTTP_AUTHORIZATION' => 'Bearer '.$token]);
+        $client->setServerParameters(['HTTP_AUTHORIZATION' => 'Bearer ' . $token]);
 
         $client->request('GET', '/api/tasks');
 
