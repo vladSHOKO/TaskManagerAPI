@@ -13,18 +13,16 @@ use App\Processor\CommentPostProcessor;
 use App\Repository\CommentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use http\Exception\InvalidArgumentException;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
-        new Post(security: 'is_granted("ROLE_USER")', processor: CommentPostProcessor::class,),
+        new Post(security: 'is_granted("ROLE_USER")', processor: CommentPostProcessor::class),
         new Get(security: 'is_granted("ROLE_ADMIN") or object.getAuthor() == user'),
         new Delete(security: 'is_granted("ROLE_ADMIN") or object.getAuthor() == user'),
         new GetCollection(provider: CommentCollectionDataProvider::class),
-        new Patch(security: 'is_granted("ROLE_ADMIN") or object.getAuthor() == user')
+        new Patch(security: 'is_granted("ROLE_ADMIN") or object.getAuthor() == user'),
     ],
     normalizationContext: ['groups' => ['comment:read']],
     denormalizationContext: ['groups' => ['comment:write']],

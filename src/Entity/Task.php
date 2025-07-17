@@ -22,12 +22,11 @@ use Symfony\Component\Validator\Constraints as Assert;
     new Get(security: "is_granted('ROLE_ADMIN') or object.getOwner() == user"),
     new Post(security: "is_granted('ROLE_ADMIN') or object.getOwner() == user"),
     new Patch(security: "is_granted('ROLE_ADMIN') or object.getOwner() == user"),
-    new Delete(security: "is_granted('ROLE_ADMIN') or object.getOwner() == user")
+    new Delete(security: "is_granted('ROLE_ADMIN') or object.getOwner() == user"),
 ],
     normalizationContext: ['groups' => ['task:read']],
     denormalizationContext: ['groups' => ['task:write']],
     security: "is_granted('ROLE_USER')",
-
 )]
 class Task
 {
