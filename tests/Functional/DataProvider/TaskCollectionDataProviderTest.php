@@ -22,7 +22,7 @@ class TaskCollectionDataProviderTest extends WebTestCase
 
         $token = json_decode($content, true)['token'];
 
-        $client->setServerParameters(['HTTP_AUTHORIZATION' => 'Bearer ' . $token]);
+        $client->setServerParameters(['HTTP_AUTHORIZATION' => 'Bearer '.$token]);
 
         $client->request('GET', '/api/tasks');
 
