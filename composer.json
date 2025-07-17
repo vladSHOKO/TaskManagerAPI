@@ -83,6 +83,13 @@
         ],
         "php-lint": [
             "./vendor/bin/phplint --exclude=vendor"
+        ],
+        "tests": [
+            "./vendor/bin/phpunit"
+        ],
+        "linters": [
+            "./vendor/bin/php-cs-fixer fix",
+            "./vendor/bin/phplint --exclude=vendor"
         ]
     },
     "conflict": {
