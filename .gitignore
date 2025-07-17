@@ -8,8 +8,8 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
-/.idea
-.idea/
+
+.idea
 ###> phpunit/phpunit ###
 /phpunit.xml
 /.phpunit.cache/
